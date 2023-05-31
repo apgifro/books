@@ -19,9 +19,9 @@ class _CheckYourEmailScreenState extends State<CheckYourEmailScreen> {
               Image.asset('images/email_sent.png'),
               SizedBox(height: 25,),
               Text('Verifique sua caixa de e-mail'),
-              Text('Inclusive a pasta spam'),
-              Text('E após validar seu e-mail'),
-              Text('Volte e faça seu login!'),
+              Text('(Inclusive a pasta spam).'),
+              SizedBox(height: 15,),
+              Text('Então volte e faça seu login!'),
               SizedBox(height: 25,),
               ElevatedButton(onPressed: () {
                 Navigator.of(context).pushNamed('/welcome');

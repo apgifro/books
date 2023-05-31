@@ -1,7 +1,7 @@
 import 'package:books/view/check_email_screen.dart';
-import 'package:books/view/home_screen.dart';
-import 'package:books/view/login_with_email_screen.dart';
-import 'package:books/view/register_with_email_screen.dart';
+import 'package:books/view/navigation_screen.dart';
+import 'package:books/view/login_screen.dart';
+import 'package:books/view/register_screen.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +44,7 @@ Future<void> main() async {
               case '/loginWithEmail':
                 return MaterialPageRoute(builder: (context) => LoginWithEmailScreen());
               case '/home':
-                return MaterialPageRoute(builder: (context) => HomeScreen());
+                return MaterialPageRoute(builder: (context) => NavigationScreen());
             }
           })));
 }

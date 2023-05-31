@@ -18,22 +18,22 @@ class _RegisterWithEmailScreenState extends State<RegisterWithEmailScreen> {
     String message;
 
     try {
-      EasyLoading.show(status: 'Criando conta...');
+      FocusManager.instance.primaryFocus?.unfocus();
+      EasyLoading.show(status: 'Criando');
 
-      var credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _controladorEmail.text,
-          password: _controladorSenha.text
-      );
+      var credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: _controladorEmail.text, password: _controladorSenha.text);
       final user = credential.user;
-      if (user != null)
-        user.sendEmailVerification();
+      if (user != null) user.sendEmailVerification();
 
       EasyLoading.dismiss();
 
       EasyLoading.instance.toastPosition = EasyLoadingToastPosition.bottom;
       EasyLoading.showToast('Conta criada!');
 
-      Navigator.of(context).pushNamedAndRemoveUntil('/checkYourEmail', (Route<dynamic> route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          '/checkYourEmail', (Route<dynamic> route) => false);
     } on FirebaseAuthException catch (e) {
       EasyLoading.instance.toastPosition = EasyLoadingToastPosition.center;
       EasyLoading.showToast('Conta não criada :(');
@@ -54,45 +54,67 @@ class _RegisterWithEmailScreenState extends State<RegisterWithEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Criar uma nova conta'),
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(
-              height: 20,
+            Image.asset('images/create.png'),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 5, 0, 30),
+                  child: Row(
+                    children: const [
+                      Text(
+                        'Crie uma nova conta',
+                        style: TextStyle(
+                            fontSize: 26.0, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 5),
+              padding: const EdgeInsets.fromLTRB(18, 0, 18, 5),
               child: TextField(
                 controller: _controladorEmail,
                 decoration: const InputDecoration(
-                  label: Text('E-mail'),
-                  border: OutlineInputBorder(),
-                ),
+                    label: Text('E-mail'),
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.email_outlined)),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+              padding: const EdgeInsets.fromLTRB(18, 5, 18, 5),
               child: TextField(
                 controller: _controladorSenha,
                 obscureText: true,
                 decoration: const InputDecoration(
-                  label: Text('Senha'),
-                  border: OutlineInputBorder(),
-                ),
+                    label: Text('Senha'),
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.password_outlined)),
               ),
             ),
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(
-                onPressed: signUp, child: const Text('Criar')),
+            SizedBox(
+              width: screenWidth - 25,
+              child: ElevatedButton(
+                  onPressed: signUp,
+                  child: const Text(
+                    'Criar',
+                    style: TextStyle(fontSize: 16),
+                  )),
+            ),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
           ],
         ),
