@@ -17,17 +17,26 @@ class _RegisterWithEmailScreenState extends State<RegisterWithEmailScreen> {
   Future<void> signUp() async {
     String message;
 
-    EasyLoading.instance.toastPosition = EasyLoadingToastPosition.center;
-
     try {
+      EasyLoading.show(status: 'Criando conta...');
+
       var credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _controladorEmail.text,
           password: _controladorSenha.text
       );
+      final user = credential.user;
+      if (user != null)
+        user.sendEmailVerification();
+
+      EasyLoading.dismiss();
+
+      EasyLoading.instance.toastPosition = EasyLoadingToastPosition.bottom;
       EasyLoading.showToast('Conta criada!');
 
+      Navigator.of(context).pushNamedAndRemoveUntil('/checkYourEmail', (Route<dynamic> route) => false);
     } on FirebaseAuthException catch (e) {
-      EasyLoading.showToast('Conta não criada :(dello');
+      EasyLoading.instance.toastPosition = EasyLoadingToastPosition.center;
+      EasyLoading.showToast('Conta não criada :(');
     }
   }
 

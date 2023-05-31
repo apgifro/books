@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LoginWithEmailScreen extends StatefulWidget {
   const LoginWithEmailScreen({Key? key}) : super(key: key);
@@ -14,11 +15,21 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
   TextEditingController _controladorSenha = TextEditingController();
 
   Future<void> signIn() async {
-    var credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _controladorEmail.text, password: _controladorSenha.text
-    );
-    bool? emailValidado = credential.user?.emailVerified;
-    Navigator.of(context).pushNamedAndRemoveUntil('/homeLogin', (Route<dynamic> route) => false);
+    try {
+      var credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _controladorEmail.text, password: _controladorSenha.text
+      );
+      bool? emailValidado = credential.user?.emailVerified;
+      if (emailValidado!) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/home', (Route<dynamic> route) => false);
+      } else {
+        EasyLoading.showToast('Verifique seu e-mail antes de continuar');
+      }
+    } on FirebaseAuthException catch (e) {
+      EasyLoading.instance.toastPosition = EasyLoadingToastPosition.center;
+      EasyLoading.showToast('Não entrou');
+    }
   }
 
   @override

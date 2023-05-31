@@ -1,3 +1,5 @@
+import 'package:books/view/check_email_screen.dart';
+import 'package:books/view/home_screen.dart';
 import 'package:books/view/login_with_email_screen.dart';
 import 'package:books/view/register_with_email_screen.dart';
 import 'package:device_preview/device_preview.dart';
@@ -37,10 +39,12 @@ Future<void> main() async {
                 return MaterialPageRoute(builder: (context) => WelcomeScreen());
               case '/registerWithEmail':
                 return MaterialPageRoute(builder: (context) => RegisterWithEmailScreen());
-              case '/registerWithEmail':
-                return MaterialPageRoute(builder: (context) => RegisterWithEmailScreen());
+              case '/checkYourEmail':
+                return MaterialPageRoute(builder: (context) => CheckYourEmailScreen());
               case '/loginWithEmail':
                 return MaterialPageRoute(builder: (context) => LoginWithEmailScreen());
+              case '/home':
+                return MaterialPageRoute(builder: (context) => HomeScreen());
             }
           })));
 }
