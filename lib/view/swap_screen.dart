@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+class SwapScreen extends StatefulWidget {
+  const SwapScreen({Key? key}) : super(key: key);
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<SwapScreen> createState() => _SwapScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SwapScreenState extends State<SwapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: Row(
                   children: const [
                     Text(
-                      'Pesquisar',
+                      'Trocas',
                       style: TextStyle(
                           fontSize: 26.0, fontWeight: FontWeight.bold),
                     ),

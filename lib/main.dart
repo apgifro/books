@@ -1,3 +1,4 @@
+import 'package:books/view/account_screen.dart';
 import 'package:books/view/check_email_screen.dart';
 import 'package:books/view/discover_screen.dart';
 import 'package:books/view/navigation_screen.dart';
@@ -12,6 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +35,7 @@ Future<void> main() async {
             colorSchemeSeed: const Color(0x63B9FF),
             useMaterial3: true,
           ),
-          initialRoute: '/welcome',
+          initialRoute: FirebaseAuth.instance.currentUser != null ? '/home' : '/welcome',
           onGenerateRoute: (RouteSettings settings) {
             switch (settings.name) {
               case '/welcome':
@@ -46,6 +48,8 @@ Future<void> main() async {
                 return MaterialPageRoute(builder: (context) => LoginWithEmailScreen());
               case '/home':
                 return MaterialPageRoute(builder: (context) => NavigationScreen());
+              case '/account':
+                return MaterialPageRoute(builder: (context) => AccountScreen());
             }
           })));
 }
