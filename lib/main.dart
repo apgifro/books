@@ -1,4 +1,5 @@
 import 'package:books/view/check_email_screen.dart';
+import 'package:books/view/discover_screen.dart';
 import 'package:books/view/navigation_screen.dart';
 import 'package:books/view/login_screen.dart';
 import 'package:books/view/register_screen.dart';
