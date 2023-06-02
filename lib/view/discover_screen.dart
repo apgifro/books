@@ -65,7 +65,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -76,6 +76,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                   ),
                   GestureDetector(
                     child: CircleAvatar(
+                      backgroundColor: Colors.black12,
                       child: Icon(Icons.account_circle),
                     ),
                     onTap: () {
@@ -86,9 +87,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(18, 10, 18, 20),
+              padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
               child: Container(
-                height: 50,
+                height: 70,
                 child: TextField(
                   decoration: const InputDecoration(
                       labelText: 'Busque um livro, autor ou gênero',
@@ -109,7 +110,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          crossAxisSpacing: 5.0,
+                          crossAxisSpacing: 0.0,
                           mainAxisSpacing: 15.0,
                           childAspectRatio: 0.8,
                         ),
@@ -125,9 +126,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                               },
                               child: Container(
                                 margin:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                    const EdgeInsets.symmetric(horizontal: 11.0),
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.blueGrey),
                                     image: DecorationImage(
                                         image:
                                             NetworkImage(recipe.urlBookImage),

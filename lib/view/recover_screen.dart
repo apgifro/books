@@ -2,37 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-class LoginWithEmailScreen extends StatefulWidget {
-  const LoginWithEmailScreen({Key? key}) : super(key: key);
+class RecoverWithEmailScreen extends StatefulWidget {
+  const RecoverWithEmailScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginWithEmailScreen> createState() => _LoginWithEmailScreenState();
+  State<RecoverWithEmailScreen> createState() => _RecoverWithEmailScreenState();
 }
 
-class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
+class _RecoverWithEmailScreenState extends State<RecoverWithEmailScreen> {
   TextEditingController _controladorEmail = TextEditingController();
-  TextEditingController _controladorSenha = TextEditingController();
 
   Future<void> signIn() async {
     try {
-      FocusManager.instance.primaryFocus?.unfocus();
-      EasyLoading.show(status: 'Entrando');
-
-      var credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _controladorEmail.text, password: _controladorSenha.text);
-      EasyLoading.dismiss();
-
-      bool? emailValidado = credential.user?.emailVerified;
-      if (emailValidado!) {
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
-      } else {
-        EasyLoading.instance.toastPosition = EasyLoadingToastPosition.bottom;
-        EasyLoading.showToast('Verifique seu e-mail');
-      }
-    } on FirebaseAuthException catch (e) {
-      EasyLoading.instance.toastPosition = EasyLoadingToastPosition.center;
-      EasyLoading.showToast('Erro ao entrar');
+      FirebaseAuth.instance.sendPasswordResetEmail(email: _controladorEmail.text!);
+      EasyLoading.instance.toastPosition =
+          EasyLoadingToastPosition.bottom;
+      EasyLoading.showToast('Email de recuperação enviado!');
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/welcome', (Route<dynamic> route) => false);
+    } catch (e) {
+      EasyLoading.showToast('Erro ao enviar email de recuperação.');
+      // Error
     }
   }
 
@@ -45,7 +35,6 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
   void dispose() {
     super.dispose();
     _controladorEmail.dispose();
-    _controladorSenha.dispose();
   }
 
   @override
@@ -59,7 +48,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.asset('images/login.png'),
+            Image.asset('images/recover.png'),
             Column(
               children: [
                 Padding(
@@ -67,7 +56,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
                   child: Row(
                     children: const [
                       Text(
-                        'Entrar',
+                        'Recuperar senha',
                         style: TextStyle(
                             fontSize: 26.0, fontWeight: FontWeight.bold),
                       ),
@@ -86,22 +75,6 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
                     prefixIcon: Icon(Icons.email_outlined)),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18, 5, 18, 5),
-              child: TextField(
-                controller: _controladorSenha,
-                obscureText: true,
-                decoration: const InputDecoration(
-                    label: Text('Senha'),
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.password_outlined)),
-              ),
-            ),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/recoverWithEmail');
-                },
-                child: const Text('Esqueceu sua senha?', style: TextStyle(fontSize: 16),)),
             const SizedBox(
               height: 20,
             ),
@@ -110,7 +83,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
               child: ElevatedButton(
                   onPressed: signIn,
                   child: const Text(
-                    'Entrar',
+                    'Enviar e-mail de recuperação',
                     style: TextStyle(fontSize: 16),
                   )),
             ),
