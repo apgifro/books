@@ -13,7 +13,6 @@ class DiscoverScreen extends StatefulWidget {
 }
 
 class _DiscoverScreenState extends State<DiscoverScreen> {
-
   Map<String, dynamic> fetch = {};
   List<Book>? books = [];
 
@@ -33,7 +32,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     super.initState();
 
     String random = volumes[Random().nextInt(volumes.length)];
-
     callFetchBooks(random);
   }
 
@@ -43,14 +41,20 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       setState(() {
         fetch = data;
         books?.clear();
+        print(fetch['items']);
         for (Map<String, dynamic> book in fetch['items']) {
           try {
-            books!.add(Book(
+            print(book['volumeInfo']['title']);
+            Book createBook = Book(
                 bookID: book['id'],
                 bookName: book['volumeInfo']['title'],
-                urlBookImage: book['volumeInfo']['imageLinks']['thumbnail']));
+                description: book['volumeInfo']['description'],
+                authors: book['volumeInfo']['authors'].join(),
+                urlBookImage: book['volumeInfo']['imageLinks']['thumbnail']);
+            books!.add(createBook);
           } catch (e) {
             // Error;
+            print(e);
           }
         }
       });
@@ -104,7 +108,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               ),
             ),
             isLoading
-                ? const Expanded(child: Center(child: CircularProgressIndicator()))
+                ? const Expanded(
+                    child: Center(child: CircularProgressIndicator()))
                 : Expanded(
                     child: GridView.builder(
                         gridDelegate:
@@ -118,19 +123,20 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                             horizontal: 6.0, vertical: 6.0),
                         itemCount: books?.length,
                         itemBuilder: (BuildContext context, int index) {
-                          final Book recipe = books![index];
+                          final Book this_book = books![index];
                           return GestureDetector(
                               onTap: () {
-                                Navigator.of(context).pushNamed('/book',
-                                    arguments: recipe.bookID);
+                                Navigator.of(context)
+                                    .pushNamed('/book', arguments: this_book);
                               },
                               child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 11.0),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 11.0),
                                 decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
                                     image: DecorationImage(
-                                        image:
-                                            NetworkImage(recipe.urlBookImage),
+                                        image: NetworkImage(
+                                            this_book.urlBookImage),
                                         fit: BoxFit.cover)),
                               ));
                         }),

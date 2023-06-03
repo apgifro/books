@@ -106,14 +106,6 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(20, 3, 18, 20),
-                  child: Text('Ele será exibido para outros usuários.'),
-                ),
-              ],
-            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 15, 0, 10),
               child: Row(
@@ -146,7 +138,6 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                       ],
                     ),
-
                     Icon(Icons.chevron_right),
                   ],
                 ),
