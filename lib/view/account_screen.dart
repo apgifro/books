@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:validatorless/validatorless.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -73,13 +74,14 @@ class _AccountScreenState extends State<AccountScreen> {
               padding: const EdgeInsets.fromLTRB(18, 0, 18, 5),
               child: Container(
                 height: 70,
-                child: TextField(
+                child: TextFormField(
                   controller: _controladorNome,
+                  validator: Validatorless.required('Digite seu nome'),
                   decoration: const InputDecoration(
                       labelText: 'Qual o seu nome?',
                       border: OutlineInputBorder(),
                       prefixIcon: Icon(Icons.account_circle)),
-                  onSubmitted: (String value) async {
+                  onFieldSubmitted: (String value) async {
                     try {
                       FocusManager.instance.primaryFocus?.unfocus();
                       EasyLoading.show(status: 'Atualizando');

@@ -7,6 +7,7 @@ animated_text_kit: ^4.2.2
 flutter_easyloading: ^3.0.5
 device_preview: ^1.1.0
 http: ^0.13.5
+validatorless: ^1.2.3
 
 firebase_core: ^2.13.1
 firebase_auth: ^4.6.2

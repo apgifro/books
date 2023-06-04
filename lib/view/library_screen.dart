@@ -23,7 +23,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
   Future<void> getLibrary() async {
     await db.collection("libraries").get().then((event) {
       final allBooksLiked = db.collection("libraries");
-      final query = allBooksLiked.where("userid", isEqualTo: onlineUser).where('nolibrary', isEqualTo: 'false');
+      final query = allBooksLiked
+          .where("userid", isEqualTo: onlineUser)
+          .where('nolibrary', isEqualTo: 'false');
       query.get().then(
         (querySnapshot) {
           listLikedBooks.clear();
@@ -63,6 +65,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -79,8 +82,15 @@ class _LibraryScreenState extends State<LibraryScreen> {
               ),
             ),
             isLoading
-                ? const Expanded(
-                    child: Center(child: CircularProgressIndicator()))
+                ? SingleChildScrollView(
+                    child: Column(children: [
+                      Image.asset('images/library.png'),
+                      const Text(
+                        'Seus livros aparecerão aqui!',
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ]),
+                  )
                 : Expanded(
                     child: ListView.separated(
                       padding: const EdgeInsets.all(8),
@@ -104,8 +114,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
                             ),
                           ),
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed('/book', arguments: listLikedBooks[index]);
+                            Navigator.of(context).pushNamed('/book',
+                                arguments: listLikedBooks[index]);
                           },
                         );
                       },

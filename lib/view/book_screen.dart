@@ -34,7 +34,8 @@ class _BookScreenState extends State<BookScreen> {
       final libraryState = db.collection("libraries");
       final query = libraryState
           .where("userid", isEqualTo: onlineUser)
-          .where("bookid", isEqualTo: widget.receivedBook.bookID);
+          .where("bookid", isEqualTo: widget.receivedBook.bookID)
+          .where('nolibrary', isEqualTo: 'false');
       query.get().then(
         (querySnapshot) {
           if (querySnapshot.docs.isNotEmpty) {
@@ -216,7 +217,7 @@ class _BookScreenState extends State<BookScreen> {
     final likedBook = <String, dynamic>{
       "userid": onlineUser,
       "bookid": widget.receivedBook.bookID,
-      "swapid": "",
+      "swapid": "false",
       "nolibrary": "false",
     };
 

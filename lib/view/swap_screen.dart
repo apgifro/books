@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:validatorless/validatorless.dart';
 
 import '../models/api.dart';
 import '../models/book.dart';
@@ -38,7 +39,6 @@ class _SwapScreenState extends State<SwapScreen> {
           if (querySnapshot.docs.isNotEmpty) {
             setState(() {
               inLibrary = true;
-
             });
           }
         },
@@ -51,7 +51,7 @@ class _SwapScreenState extends State<SwapScreen> {
   void initState() {
     super.initState();
     final User? user = auth.currentUser;
-    onlineUser = user!.uid;
+    onlineUser = user!.email!;
   }
 
   @override
@@ -81,8 +81,12 @@ class _SwapScreenState extends State<SwapScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(18, 0, 18, 5),
-                child: TextField(
+                child: TextFormField(
                   controller: _controladorEmail,
+                  validator: Validatorless.multiple([
+                    Validatorless.email('Digite um e-mail válido'),
+                    Validatorless.required('Digite um e-mail válido')
+                  ]),
                   decoration: const InputDecoration(
                       label: Text('E-mail'),
                       border: OutlineInputBorder(),
@@ -126,8 +130,6 @@ class _SwapScreenState extends State<SwapScreen> {
         'nolibrary': 'true'
       });
 
-      // add to other user
-
       final swapBook = <String, dynamic>{
         "userid": _controladorEmail.text,
         "bookid": widget.receivedBook.bookID,
@@ -140,7 +142,6 @@ class _SwapScreenState extends State<SwapScreen> {
 
       EasyLoading.showToast('Trocado');
 
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          '/swaped', (Route<dynamic> route) => false);
+      Navigator.of(context).pop();
   }
 }

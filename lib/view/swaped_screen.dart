@@ -23,9 +23,11 @@ class _SwapedScreenState extends State<SwapedScreen> {
   Future<void> getSwap() async {
     await db.collection("libraries").get().then((event) {
       final allBooksLiked = db.collection("libraries");
-      final query = allBooksLiked.where("userid", isEqualTo: onlineUser).where('nolibrary', isEqualTo: 'true');
+      final query = allBooksLiked
+          .where("userid", isEqualTo: onlineUser)
+          .where('swapid', isNotEqualTo: 'false');
       query.get().then(
-            (querySnapshot) {
+        (querySnapshot) {
           swapedBooks.clear();
           for (var docSnapshot in querySnapshot.docs) {
             String bookid = docSnapshot.data()['bookid'];
@@ -34,21 +36,21 @@ class _SwapedScreenState extends State<SwapedScreen> {
               setState(() {
                 swapedBooks!.add(
                   Book(
-                    bookID: bookid,
-                    bookName: fetch['volumeInfo']['title'],
-                    description: fetch['volumeInfo']['description'],
-                    authors: fetch['volumeInfo']['authors'].join(),
-                    urlBookImage: fetch['volumeInfo']['imageLinks']['thumbnail'],
-                    swapEmail: docSnapshot.data()['swapip']
-                  ),
+                      bookID: bookid,
+                      bookName: fetch['volumeInfo']['title'],
+                      description: fetch['volumeInfo']['description'],
+                      authors: fetch['volumeInfo']['authors'].join(),
+                      urlBookImage: fetch['volumeInfo']['imageLinks']
+                          ['thumbnail'],
+                      swapEmail: docSnapshot.data()['swapid']),
                 );
               });
             });
           }
-          isLoading = !isLoading;
         },
         onError: (e) => print(e),
       );
+      isLoading = !isLoading;
     });
   }
 
@@ -56,13 +58,15 @@ class _SwapedScreenState extends State<SwapedScreen> {
   void initState() {
     super.initState();
     final User? user = auth.currentUser;
-    onlineUser = user!.uid;
+    onlineUser = user!.email!;
     getSwap();
   }
 
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -79,8 +83,15 @@ class _SwapedScreenState extends State<SwapedScreen> {
               ),
             ),
             isLoading
-                ? const Expanded(
-                    child: Center(child: CircularProgressIndicator()))
+                ? SingleChildScrollView(
+                    child: Column(children: [
+                      Image.asset('images/swap.png'),
+                      const Text(
+                        'Os livros que trocar aparecerão aqui!',
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ]),
+                  )
                 : Expanded(
                     child: ListView.separated(
                       padding: const EdgeInsets.all(8),
@@ -88,23 +99,62 @@ class _SwapedScreenState extends State<SwapedScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           child: Container(
-                            height: 40,
+                            height: 100,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: Row(
+                              padding: const EdgeInsets.fromLTRB(0, 5, 20, 0),
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                      child: Text('Trocou ${swapedBooks[index].bookName} com ${swapedBooks[index].swapEmail}',
-                                    overflow: TextOverflow.ellipsis,
-                                  )),
-                                  const Icon(Icons.chevron_right),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(20, 0, 0, 15),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                            child: Text(
+                                          swapedBooks[index].bookName,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15),
+                                        )),
+                                        const Icon(Icons.chevron_right),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    child: Row(
+                                      children: [
+                                        const Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                          child: CircleAvatar(
+                                            backgroundColor: Colors.black12,
+                                            child: Icon(Icons.account_circle),
+                                          ),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text('Você trocou com:'),
+                                            Text(
+                                              swapedBooks[index].swapEmail!,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ),
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed('/book', arguments: swapedBooks[index]);
+                            Navigator.of(context).pushNamed('/book',
+                                arguments: swapedBooks[index]);
                           },
                         );
                       },

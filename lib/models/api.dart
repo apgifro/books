@@ -18,8 +18,7 @@ import 'package:http/http.dart' as http;
 // https://www.googleapis.com/books/v1/volumes?q=biologia+orderBy=newest&key=AIzaSyC6AcwYUhVcBjI3K5uDsO6H_xY8qSVL2D8
 
 const String api = 'https://www.googleapis.com/books/v1';
-// const String apiKey = 'AIzaSyC6AcwYUhVcBjI3K5uDsO6H_xY8qSVL2D8'; minha chave
-const String apiKey = 'AIzaSyCnLVuC5Oh96bE_yPPderBRvSWXSb2Jcwg';
+const String apiKey = 'AIzaSyC6AcwYUhVcBjI3K5uDsO6H_xY8qSVL2D8';
 
 
 Future <Map<String, dynamic>> fetchBooks (String content) async {

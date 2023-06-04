@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:validatorless/validatorless.dart';
 
 class LoginWithEmailScreen extends StatefulWidget {
   const LoginWithEmailScreen({Key? key}) : super(key: key);
@@ -78,8 +79,12 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(18, 0, 18, 5),
-              child: TextField(
+              child: TextFormField(
                 controller: _controladorEmail,
+                validator: Validatorless.multiple([
+                  Validatorless.email('Digite um e-mail válido'),
+                  Validatorless.required('Digite um e-mail válido')
+                ]),
                 decoration: const InputDecoration(
                     label: Text('E-mail'),
                     border: OutlineInputBorder(),
@@ -88,8 +93,9 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(18, 5, 18, 5),
-              child: TextField(
+              child: TextFormField(
                 controller: _controladorSenha,
+                validator: Validatorless.required('Digite uma senha'),
                 obscureText: true,
                 decoration: const InputDecoration(
                     label: Text('Senha'),

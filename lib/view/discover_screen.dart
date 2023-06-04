@@ -41,10 +41,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       setState(() {
         fetch = data;
         books?.clear();
-        print(fetch['items']);
         for (Map<String, dynamic> book in fetch['items']) {
           try {
-            print(book['volumeInfo']['title']);
             Book createBook = Book(
                 bookID: book['id'],
                 bookName: book['volumeInfo']['title'],
@@ -54,7 +52,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             books!.add(createBook);
           } catch (e) {
             // Error;
-            print(e);
           }
         }
       });
