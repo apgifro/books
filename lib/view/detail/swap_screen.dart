@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../models/api.dart';
-import '../models/book.dart';
+import '../../model/book.dart';
 
 class SwapScreen extends StatefulWidget {
   final Book receivedBook;

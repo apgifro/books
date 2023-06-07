@@ -1,10 +1,10 @@
-import 'package:books/view/discover_screen.dart';
-import 'package:books/view/friends_screen.dart';
-import 'package:books/view/library_screen.dart';
-import 'package:books/view/swap_screen.dart';
-import 'package:books/view/swaped_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../lists/discover_screen.dart';
+import '../lists/library_screen.dart';
+import '../lists/swaped_screen.dart';
+
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({Key? key}) : super(key: key);
@@ -15,22 +15,23 @@ class NavigationScreen extends StatefulWidget {
 
 class _NavigationScreenState extends State<NavigationScreen> {
 
-  int _currentIndex = 0;
-
-  final List<Widget> _screens = [
-    DiscoverScreen(),
-    SwapedScreen(),
-    LibraryScreen(),
-  ];
+  int _selectedPage = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: IndexedStack(
+        index: _selectedPage,
+        children: const [
+          DiscoverScreen(),
+          SwapedScreen(),
+          LibraryScreen(),
+        ],
+      ),
       bottomNavigationBar: CupertinoTabBar(
         iconSize: 28.0,
-        currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
+        currentIndex: _selectedPage,
+        onTap: (index) => setState(() => _selectedPage = index),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               label: 'Descubra',

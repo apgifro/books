@@ -1,9 +1,9 @@
-import 'package:books/models/api.dart';
+import 'package:books/model/api.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../models/book.dart';
+import '../../model/book.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({Key? key}) : super(key: key);
