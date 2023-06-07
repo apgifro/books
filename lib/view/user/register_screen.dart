@@ -16,8 +16,6 @@ class _RegisterWithEmailScreenState extends State<RegisterWithEmailScreen> {
   TextEditingController _controladorSenha = TextEditingController();
 
   Future<void> signUp() async {
-    String message;
-
     try {
       FocusManager.instance.primaryFocus?.unfocus();
       EasyLoading.show(status: 'Criando');
